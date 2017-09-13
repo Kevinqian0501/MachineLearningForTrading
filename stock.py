@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+def fill_missing_values(df):
+    """Fill missing values in data frame, in place."""
+    df.fillna(method='ffill', inplace=True)
+    df.fillna(method='bfill', inplace=True)
+
 class stocks(object):
     def __init__(self):
         self.cache = {}
@@ -24,8 +29,7 @@ class stocks(object):
         try:
             # User pandas_reader.data.DataReader to load the desired data. As simple as that.
             panel_data = data.DataReader(symbol, data_source, start_date, end_date);
-            panel_data = panel_data.fillna(method='ffill');
-            panel_data = panel_data.fillna(method='bfill');
+            fill_missing_values(panel_data)
             self.cache[symbol] = panel_data
             return self.cache[symbol]
         except RemoteDataError:
@@ -79,11 +83,11 @@ class stocks(object):
         return os.path.join(base_dir, "{}.csv".format(str(symbol)))
 
 
-    def plot_data(self, df, title="Stock prices"):
+    def plot_data(self, df, title="Stock prices", ylabel="Price"):
         """Plot stock prices with a custom title and meaningful axis labels."""
         ax = df.plot(title=title, fontsize=12)
         ax.set_xlabel("Date")
-        ax.set_ylabel("Price")
+        ax.set_ylabel(ylabel)
         plt.show()
 
     def is_cached(self, symbol):
