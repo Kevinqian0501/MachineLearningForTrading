@@ -2,7 +2,6 @@ import pandas as pd
 from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 
 def fill_missing_values(df):
