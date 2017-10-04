@@ -67,7 +67,7 @@ class stocks(object):
 
         for symbol in symbols:
             if not os.path.isfile(self.symbol_to_path(symbol)):
-                self.get_data_to_csv(symbol)
+                self.get_data_to_csv(symbol, dates[0], dates[-1])
             df_temp = pd.read_csv(self.symbol_to_path(symbol), index_col='Date',
                     parse_dates=True, usecols=['Date', 'Adj Close'], na_values=['nan'])
             df_temp = df_temp.rename(columns={'Adj Close': symbol})
